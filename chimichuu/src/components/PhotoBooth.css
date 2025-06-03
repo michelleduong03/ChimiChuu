@@ -6,71 +6,61 @@ body {
 
 .chimi-wrapper {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 2rem;
-  padding: 2rem;
+  flex-direction: column;
+  align-items: center;
   min-height: 100vh;
+  padding: 2rem;
 }
 
-.chimi-container {
-  background-color: #f1e8dc;
-  border-radius: 2rem;
-  padding: 2rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+.chimi-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #6b584c;
+  letter-spacing: 0.5px;
+}
+
+.photobooth-main {
+  display: flex;
+  flex-wrap: wrap; /* ensures responsiveness on small screens */
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.camera-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
 }
 
-.chimi-title {
-  font-size: 2rem;
-  color: #6b584c;
-  margin-bottom: 1rem;
-  letter-spacing: 0.5px;
+.controls {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: center;
 }
 
-.chimi-video {
-  width: 300px;
-  height: 400px;
-  border: 6px solid #d9cfc3;
-  border-radius: 1rem;
-  background-color: #ddd5cb;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
-
-.chimi-button {
-  background-color: #b8a48c;
-  color: #fffdf8;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 1rem;
-  font-size: 1.1rem;
-  cursor: pointer;
-  box-shadow: 0 3px 8px rgba(100, 90, 75, 0.2);
-  transition: all 0.2s ease;
-}
-
-.chimi-button:hover {
-  background-color: #a38f79;
-  transform: scale(1.05);
+.strip-and-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 .chimi-strip {
   display: flex;
-  flex-direction: column;  /* stack vertically */
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
-  margin-top: 20px;
-  height: 405px;           /* a bit taller than total images height */
-  padding: 10px 0;         /* add vertical padding above & below images */
-  overflow: hidden;        /* no scroll */
-  width: 100px;            /* narrow width for vertical strip */
+  width: 100px;
+  height: 405px;
+  padding: 10px 0;
   background-color: #ddd5cb;
-  border-radius: 12px;     /* optional, for a nicer container look */
+  border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  align-items: center;
 }
 
 .chimi-strip img {
@@ -83,9 +73,21 @@ body {
   pointer-events: none;
 }
 
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100px;
+}
+
+.button-group .chimi-button {
+  width: 100%;
+  text-align: center;
+}
+
 .chimi-countdown {
   position: absolute;
-  top: 150px;
+  top: 140px;
   left: 0;
   right: 0;
   text-align: center;
@@ -93,6 +95,18 @@ body {
   color: #9e8f7a;
   font-weight: bold;
   animation: pop 1s ease-out;
+  z-index: 2;
+}
+
+.chimi-video {
+  width: 300px;
+  height: 400px;
+  border: 6px solid #d9cfc3;
+  border-radius: 1rem;
+  background-color: #ddd5cb;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  z-index: 1;
 }
 
 @keyframes pop {
@@ -101,16 +115,10 @@ body {
   100% { transform: scale(1); }
 }
 
-
-/* Beige Theme (default) */
+/* Theme: Beige */
 .theme-beige {
   background-color: #f5f0ea;
   color: #6b584c;
-}
-
-.theme-beige .chimi-container {
-  background-color: #f1e8dc;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .theme-beige .chimi-button {
@@ -118,15 +126,10 @@ body {
   color: #fffdf8;
 }
 
-/* Pink Theme */
+/* Theme: Pink */
 .theme-pink {
   background-color: #ffe6f0;
   color: #9b3d6a;
-}
-
-.theme-pink .chimi-container {
-  background-color: #ffd7e8;
-  box-shadow: 0 4px 12px rgba(155, 61, 106, 0.2);
 }
 
 .theme-pink .chimi-button {
@@ -134,15 +137,10 @@ body {
   color: #fff;
 }
 
-/* Dark Theme */
+/* Theme: Dark */
 .theme-dark {
   background-color: #2e2e2e;
   color: #f1e8dc;
-}
-
-.theme-dark .chimi-container {
-  background-color: #3b3b3b;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 .theme-dark .chimi-button {
@@ -150,7 +148,7 @@ body {
   color: #f1e8dc;
 }
 
-
+/* Theme selector */
 .theme-selector {
   margin-bottom: 1rem;
   padding: 0.4rem 0.8rem;
