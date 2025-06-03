@@ -8,9 +8,9 @@ Welcome to **ChimiChuu Photobooth**, your little corner to snap adorable photo s
 
 - **Real-time camera preview** with countdown timer before each snap ⏳  
 - Capture **4 photos in a row** automatically, creating a photo strip  
-- Cute **vertical photo strip** display with a cozy background 🌸  
+- Cute **vertical photo strip** display 🌸  
 - Option to **take another strip** whenever you want  
-- **Download your photo strip** as a single image including the background — perfect for sharing or printing! 📥  
+- **Download your photo strip** as a single image  — perfect for sharing or printing! 📥  
 - Choose your favorite theme: Beige, Pink, or Dark 🎨  
 
 ---
