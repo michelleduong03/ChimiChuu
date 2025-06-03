@@ -1,19 +1,28 @@
 import React, { useRef, useState, useEffect } from 'react';
-import html2canvas from 'html2canvas'; // make sure installed via npm
+import html2canvas from 'html2canvas';
 import './PhotoBooth.css';
 
 const PhotoBooth = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const stripRef = useRef(null); // <-- new ref here
+  const stripRef = useRef(null);
   const [photos, setPhotos] = useState([]);
   const [countdown, setCountdown] = useState(null);
-  const [theme, setTheme] = useState('beige');  // default theme
+  const [theme, setTheme] = useState('beige');
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-      videoRef.current.srcObject = stream;
-    });
+    const startCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (err) {
+        console.error('Error accessing camera:', err);
+      }
+    };
+
+    startCamera();
   }, []);
 
   const handleSnap = async () => {
@@ -42,7 +51,7 @@ const PhotoBooth = () => {
   const downloadStrip = () => {
     if (!stripRef.current) return;
 
-    html2canvas(stripRef.current, {backgroundColor: null}).then(canvas => {
+    html2canvas(stripRef.current, { backgroundColor: null }).then((canvas) => {
       const link = document.createElement('a');
       link.download = 'chimi-strip.png';
       link.href = canvas.toDataURL('image/png');
@@ -52,58 +61,75 @@ const PhotoBooth = () => {
 
   return (
     <div className={`chimi-wrapper theme-${theme}`}>
-      <div className="chimi-container">
-        <h1 className="chimi-title">ChimiChuu Photobooth</h1>
+      <h1 className="chimi-title">ChimiChuu Photobooth</h1>
 
-        <select
-          value={theme}
-          onChange={(e) => setTheme(e.target.value)}
-          className="theme-selector"
-          aria-label="Select theme"
-        >
-          <option value="beige">Beige</option>
-          <option value="pink">Pink</option>
-          <option value="dark">Dark</option>
-        </select>
+      <div className="photobooth-main">
+        <div className="camera-section">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            className="chimi-video"
+          />
+          {countdown && <div className="chimi-countdown">{countdown}</div>}
 
-        <video ref={videoRef} autoPlay className="chimi-video" />
-        <canvas ref={canvasRef} width={300} height={400} style={{ display: 'none' }} />
-        
-        <button onClick={handleSnap} className="chimi-button" disabled={countdown !== null}>
-          ✨ Snap ✨
-        </button>
+          <div className="controls">
+            <select
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+              className="theme-selector"
+              aria-label="Select theme"
+            >
+              <option value="beige">Beige</option>
+              <option value="pink">Pink</option>
+              <option value="dark">Dark</option>
+            </select>
+
+            <button
+              onClick={handleSnap}
+              className="chimi-button"
+              disabled={countdown !== null}
+            >
+              ✨ Snap ✨
+            </button>
+          </div>
+        </div>
 
         {photos.length > 0 && (
-          <>
-            <button
-              onClick={() => setPhotos([])}
-              className="chimi-button chimi-button-secondary"
-              disabled={countdown !== null}
-            >
-              📸 Take Another Picture
-            </button>
-            <button
-              onClick={downloadStrip}
-              className="chimi-button chimi-button-secondary"
-              disabled={countdown !== null}
-            >
-              📥 Download Strip
-            </button>
-          </>
-        )}
+          <div className="strip-and-buttons">
+            <div className="chimi-strip" ref={stripRef}>
+              {photos.map((photo, index) => (
+                <img key={index} src={photo} alt={`Chimi shot ${index}`} />
+              ))}
+            </div>
 
-        {countdown && <div className="chimi-countdown">{countdown}</div>}
+            <div className="button-group">
+              <button
+                onClick={() => setPhotos([])}
+                className="chimi-button chimi-button-secondary"
+                disabled={countdown !== null}
+              >
+                📸 Take Another Picture
+              </button>
+              <button
+                onClick={downloadStrip}
+                className="chimi-button chimi-button-secondary"
+                disabled={countdown !== null}
+              >
+                📥 Download Strip
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Attach ref here so html2canvas can capture this div */}
-
-        {photos.length > 0 && (
-            <div className="chimi-strip" ref={stripRef}>
-                {photos.map((photo, index) => (
-                <img key={index} src={photo} alt={`Chimi shot ${index}`} />
-                ))}
-            </div>
-        )}
+      <canvas
+        ref={canvasRef}
+        width={300}
+        height={400}
+        style={{ display: 'none' }}
+      />
     </div>
   );
 };
